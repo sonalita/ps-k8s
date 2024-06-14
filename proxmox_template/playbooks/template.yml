@@ -1,0 +1,11 @@
+---
+- hosts: proxmox
+# Uncomment this if you need to autheticate the ssh connection with a password
+  #vars_prompt:
+  #- name: "ansible_password"
+  #  prompt: "Enter the remote proxmox password"
+  #  private: true
+  tasks:
+  - import_role:
+      name: proxmox-template
+
