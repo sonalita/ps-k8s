@@ -1,9 +1,9 @@
 ---
 # vars file
 isopath: /var/isos
-template_memory: 2048
+template_memory: 8192
 template_cores: 2
-template_disk_size: 32G
+template_disk_size: 50G
 template_starting_id: 8000
 import_storage: local-lvm
 cloudimgs:
