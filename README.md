@@ -10,7 +10,7 @@ I recommend that you fork this repo so you can customize and preserve your confi
 
 ## Prerequisites
  - A virtualization platform - this repo will include a proxmox template and a vagrant Vagrantfile for Oracle Virtual Box
- - A machine capable of running Ansible (Microsoft windows is problematic - either dual boot to a Linux Distro or create a workstation in VirtualBox - Linux Mint is a good Windows ;like workstation)
+ - A machine capable of running Ansible (Microsoft windows is problematic - either dual boot to a Linux Distro or create a workstation in VirtualBox - Linux Mint is a good Windows like distro for building a workstation)
  - If you are using **VirtualBox**, install [vagrant](https://developer.hashicorp.com/vagrant/install?product_intent=vagrant) from Hashicorp then you can simply follow the instructions in the `vagrant` folder to provision the necessary machines.
  - If you are using **proxmox**, create the following machines from a Ubuntu template (an Ansible playbook to build a Ubuntu 24.04 cloud-init server template is included). If you build the recommended template, the only thing you will need to change when cloning is the hostname and the ip address.
     - c1-cp1 - this will be the control plane
@@ -25,8 +25,10 @@ I recommend that you fork this repo so you can customize and preserve your confi
     - a static IP (either on the VM itself or via assigning the mac addresses fixed IPs in the DHCP settings on your router)
     - a user `psight` with `sudo` access and preferably with NOPASSWD set (`sudo visudo` the add the line `psight ALL=(ALL) NOPASSWD: ALL`). If you do not wish to use `psight` as your user, please mentally adjust as you read these instructions - and you may need to modify some variables in the playbooks/templates.    
 - Add the ip addresses for the hostnames listed above to your hosts file (`/etc/hosts` on Linux or `c:\Windows\System32\Drivers\etc\hosts` on Windows). You will need to run your editor with elevated permissions ("sudo" or "run as admin") when editing your hosts file
-- confirm that you can `ssh psight@c1-cp1` without requiring a password, and once connected, that you can run `sudo echo hello`
+- I recommend using VSCode on your workstation (and possibly on the control plane) as the labs on the course are presented using VSCode and it may be easier to follow along. The "remote SSH" extension will allow you to run vscode on any of the nodes. The nodes will also have nano and vim available if you prefer not to use vscode.
+- From your workstation, confirm that you can run `ssh psight@c1-cp1` without requiring a password, and once connected, that you can run `sudo echo hello` without prompting for password - this will simplify running the Ansible plays.
 - repeat above tests for `c1-node1`, `c1-node2`, `c1-node3` and `c1-storage`.
+- **ssh onto each node once before running the playbooks to ensure you have the fingerprint in known_hosts**
 
 ## Running the Ansible Playbooks
 
