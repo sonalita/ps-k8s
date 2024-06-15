@@ -1,0 +1,35 @@
+galaxy_info:
+  author: James Rhoat
+  description: Proxmox cloud init templates
+
+  license: GNU GPLv3
+
+  min_ansible_version: 2.9
+
+  galaxy_tags:
+    - proxmox
+    - cloudinit
+    - templates
+    - ubuntu
+    - virtualmachines
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Archlinux
+      versions:
+        - all
+    - name: FreeBSD
+      versions:
+        - all
+
+dependencies: []
