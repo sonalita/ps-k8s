@@ -32,6 +32,16 @@ I recommend that you fork this repo so you can customize and preserve your confi
 
 ## Running the Ansible Playbooks
 
+Firstly, check that Ansible can reach your nodes. If you have changed the user on the nodes, edit the `course_infrastrucure/group-vars/all.yml` file to reflect the correct user.
+from the `course_infrastructure` folder, run the following command: 
+
+```bash
+ansible all -m ping
+```
+
+If all is well, you will see green "pong" messages from each of the nodes and you can continue with the playbooks.
+
+
 ## roadmap
  - script or add instructions for provisioning proxmox instances
  - vagrant - create ubuntu box with ansible and publish. Add a vagrantfile to start VMs
