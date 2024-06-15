@@ -1,14 +1,11 @@
 galaxy_info:
-  author: James Rhoat
-  description: Proxmox cloud init templates
-
+  author: Steve Atkinson
+  description: Base role for Pluralsight Kubernetes Administrator course
   license: GNU GPLv3
-
   min_ansible_version: "2.9"
 
   galaxy_tags:
-    - proxmox
-    - cloudinit
+    - kubernetes
     - templates
     - ubuntu
     - virtualmachines

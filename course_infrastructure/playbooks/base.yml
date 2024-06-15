@@ -1,0 +1,7 @@
+- name: Base play for common tasks
+  hosts: all
+  become: true
+  tasks:
+    - name: Import base role
+      ansible.builtin.import_role:
+        name: base
