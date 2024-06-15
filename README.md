@@ -8,7 +8,7 @@ I recommend that you fork this repo so you can customize and preserve your confi
 **THIS IS A WORK IN PROGRESS - DO NOT USE YET. Current status:proxmox template is complete, base provisioning of kubeadm/kubelet and containerd is done**
 
 ## Prerequisites
- - A virtualization platform - this repo will include a proxmox template and (eventually) a Vagrant Vagrantfile for Oracle Virtual Box.
+ - A virtualization platform - this repo will include a Proxmox template and (eventually) a Vagrant Vagrantfile for Oracle Virtual Box.
  - A machine capable of running Ansible (Microsoft windows is problematic - either dual boot to a Linux Distro or create a workstation in VirtualBox - Linux Mint is a good Windows-like distro for building a workstation)
  - If you are using **VirtualBox**, install [Vagrant](https://developer.hashicorp.com/vagrant/install?product_intent=vagrant) from Hashicorp then you can simply follow the instructions in the `vagrant` folder to provision the necessary machines.
  - If you are using **Proxmox**, create the following machines from a Ubuntu template (an Ansible playbook to build a Ubuntu 24.04 cloud-init server template is included - se the README in that folder). If you build the recommended template, the only thing you will need to change when cloning is the hostname and the ip address.
@@ -41,8 +41,8 @@ ansible all -m ping
 If all is well, you will see green "pong" messages from each of the nodes and you can continue with the playbooks.
 
 ### variables you might want to change
- - in group_vars/all.yaml - Update the ansible_user if you are not using psight. Also check the kubernetes major and minor versions.
- - if you chose too use different hostnames, update the `inventory` file
+ - in group_vars/all.yaml - Update the ansible_user if you are not using the psight user. Also check the Kubernetes major and minor versions.
+ - if you chose to use different hostnames, update the `inventory` file
 
  ### Provisioning
 
@@ -55,14 +55,14 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 This role corresponds to the "PackageInstallation-containerd.sh" script in the /03/demos folder of the course exercise files. Please note the following:
 
 - swap is already disabled in the proxmox template/vagrant box
-- I have omitted the `apt-cache policy kubelet | head -n 20` step as the output is difficult to read in the Ansible log. You can ssh onto c1-cpp1 and run it manually after the playbook has completed.
+- I have omitted the `apt-cache policy kubelet | head -n 20` step as the output is difficult to read in the Ansible log. You can ssh onto c1-cp1 and run it manually after the playbook has completed.
 - kubectl is installed as part of kubeadm - and it seems to always include the latest minor version (e.g.1.29.1-1.6 when you asked for 1.1-1) so I have omitted the explicit install of kubectl - it does not affect the exercises at all.
 - TODO: creation and distribution of node SSH keys and configuration of each node's /etc/hosts so you can get lost in an endless chain of ssh sessions :) (It may be convenient to ssh from control plane to worker nodes but you should be able to do everything from your workstation)
 
 ## roadmap
- - Vagrant - create ubuntu box with ansible and publish. Add a vagrantfile to start VMs
+ - Vagrant - create Ubuntu box with Ansible etc. and publish it. Add a vagrantfile to start VMs
  - Create roles
-    - possibly options to use calico or flannel for CNI (Calico is HUGE and overkill for a small homelab cluster. If you want to play with external ingress using something like bBareMetalLB and traeffic, calico does not work well. Flannel is much more lightweight)
+    - possibly options to use choose between calico or flannel for CNI (Calico is HUGE and overkill for a small homelab cluster. Later on, if you want to play with external ingress using something like bareMetalLB and traeffic, Calico does not work well. Flannel is much more lightweight)
     - cp role
     - worker nodes role
     - storage role
