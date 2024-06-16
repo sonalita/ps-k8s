@@ -74,6 +74,14 @@ This step corresponds to the `CreateControlPlaneNode-containerd.sh` step in 03/d
  - installs the Calico network overlay with the default pod CIDR of 172.16.0.0/16. You should not need to change this, but if you do, configure a pod_cidr var in the playbook to override the role default value. You should **not** edit the template or change the default value in the role's default folder.
  - Runs some  Quality of Life tasks that will add `kubectl` autocompletion and also alias kubectl to `k`.
 
+ Note: It can be convenient to have kubectl on your workstation. If you already have it, just scp the config file from c1-cp1:/home/psite/.kube and merge it with any other configs you may have. If you need to install it, here's a quick way (see the [kubectl docs](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) for more details)
+
+  - You likely don't want the latest version so edit the curl command in the docs to something like `curl -LO "https://dl.k8s.io/release/1.29.1/bin/linux/amd64/kubectl"` for amd64 on linux (replacing 1.29.1 with whatever version you like) and copy the kubectl binary  to /usr/bin and give it 755 permissions.
+  - create a $HOME/.kube folder
+  - copy the config with `scp psight@c1-cp1:/home/psight/.kube/config $HOME/.kube` and  protect it with `chmod 600 $HOME/.kube/config`
+  - `kubectl version` will show you kubectl and cluster control plane versions. If you see those, you're good. 
+  - Follow the instructions in the doc to configure autocompletion and aliasing.
+
  ### workers
 
  This is the final step, corresponding to the `CreateNodes-containerd.sh` step in 03/demos folder of the course exercise files.The steps in this script are identical to those in the first PackageInstallation step, so there is no need to repeat that in this playbook. ALl this playbook does is to join the node to the cluster.
