@@ -1,0 +1,53 @@
+---
+- name: Add support packages to install Kubernetes
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gpg
+
+- name: Check if Kubernetes gpg key exists
+  ansible.builtin.stat:
+    path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  register: k8s_gpg_key
+
+- name: Add Kubernetes repository key
+  when: not k8s_gpg_key.stat.exists
+  ansible.builtin.shell:
+    cmd: "curl -fsSL {{ kubernetes_aptkey_url }} | gpg --dearmor -o {{ kubernetes_keyring_path }}" # noqa: risky-shell-pipe command-instead-of-module
+  changed_when: true
+
+- name: Add Kubernetes repository
+  ansible.builtin.template:
+    src: kubernetes.list.j2
+    dest: /etc/apt/sources.list.d/kubernetes.list
+    mode: "0644"
+  changed_when: false
+
+- name: Update apt packages
+  when: not k8s_gpg_key.stat.exists
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Kubernetes packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+
+  with_items:
+    - kubelet={{ kubernetes_version }}
+    - kubeadm={{ kubernetes_version }}
+    # - kubectl={{ kubernetes_version }} kubectl is installed as part of kubeadm package
+
+- name: Mark hold on Kubernetes packages
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - containerd

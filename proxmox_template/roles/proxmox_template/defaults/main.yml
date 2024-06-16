@@ -1,0 +1,7 @@
+---
+template_note: >
+  This is a template for Ubuntu 24.04 server, it also includes Ansible.
+  It is configured to build Kubernetes nodes for the PluralSight Kubernetes
+  Administration path of courses.
+
+ansible_user: root

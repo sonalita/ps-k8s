@@ -1,10 +1,11 @@
+---
 - name: Read the VM list JSON file
   ansible.builtin.command:
     cmd: qm list -full
   register: qm_list
   changed_when: false
 
-- name: set default next_vm_id
+- name: Set default next_vm_id
   ansible.builtin.set_fact:
     next_vm_id: 100
 
@@ -16,19 +17,19 @@
 
 - name: Parse JSON content and find next VM ID
   ansible.builtin.set_fact:
-    next_vm_id: "{{ vmlist_json.content | b64decode | from_json  | json_query('ids') | dict2items  | json_query('[].key') | map('int') | list | max + 1 }}"
+    next_vm_id: "{{ vmlist_json.content | b64decode | from_json | json_query('ids') | dict2items | json_query('[].key') | map('int') | list | max + 1 }}"
   when: qm_list.stdout | length != 0
 
-- name: check against minimum vm id
+- name: Check against minimum vm id
   ansible.builtin.set_fact:
     next_vm_id: "{{ template_starting_id | int }}"
   when: next_vm_id | int < template_starting_id
 
-- name: debug
+- name: Debug to show next vm id
   ansible.builtin.debug:
     msg: "{{ next_vm_id }}"
 
-- name: create iso folder
+- name: Create iso folder
   ansible.builtin.file:
     path: "{{ isopath }}"
     state: directory
@@ -36,11 +37,11 @@
 
 - name: Copy cloud-init images
   ansible.builtin.get_url:
-    url: "{{ item.url }}"
-    dest: "{{ isopath }}/{{ item.template_name }}.qcow2"
-  with_items: "{{ cloudimgs }}"
+    url: "{{ cloudimg.url }}"
+    dest: "{{ isopath }}/{{ cloudimg.template_name }}.qcow2"
+    mode: "0644"
 
-- name: script tp clear machine id
+- name: Script tp clear machine id
   ansible.builtin.copy:
     src: clear-machine-id.sh
     dest: "{{ isopath }}/clear-machine-id.sh"

@@ -62,7 +62,7 @@ This role corresponds to the "PackageInstallation-containerd.sh" script in the /
 ## roadmap
  - Vagrant - create Ubuntu box with Ansible etc. and publish it. Add a vagrantfile to start VMs
  - Create roles
-    - possibly options to use choose between calico or flannel for CNI (Calico is HUGE and overkill for a small homelab cluster. Later on, if you want to play with external ingress using something like bareMetalLB and traeffic, Calico does not work well. Flannel is much more lightweight)
+    - possibly options to choose between calico or flannel for CNI (Calico is HUGE and overkill for a small homelab cluster. Later on, if you want to play with external ingress using something like bareMetalLB and traeffic, Calico does not work well. Flannel is much more lightweight)
     - cp role
     - worker nodes role
     - storage role

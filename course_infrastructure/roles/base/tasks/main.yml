@@ -1,0 +1,13 @@
+- name: Update packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+
+- name: Import kernel tasks
+  ansible.builtin.import_tasks: kernel.yml
+
+- name: Import containerd tasks
+  ansible.builtin.import_tasks: containerd.yml
+
+- name: Import kubernetes tasks
+  ansible.builtin.import_tasks: kubernetes.yml

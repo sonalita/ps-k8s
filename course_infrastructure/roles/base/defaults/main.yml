@@ -1,0 +1,6 @@
+---
+kubernetes_base_version: 1.29
+kubernetes_version: "{{ kubernetes_base_version }}.1-1.1"
+kubernetes_later_version: "{{ kubernetes_base_version }}.1-1.1"
+kubernetes_aptkey_url: "https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_base_version }}/deb/Release.key"
+kubernetes_keyring_path: "/etc/apt/keyrings/kubernetes-apt-keyring.gpg"

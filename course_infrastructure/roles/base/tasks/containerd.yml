@@ -1,0 +1,45 @@
+---
+- name: Install containerd
+  ansible.builtin.apt:
+    name: containerd
+    state: present
+
+- name: Check if config.toml exists
+  ansible.builtin.stat:
+    path: /etc/containerd/config.toml
+  register: config_toml
+
+- name: Create containerd config.toml
+  when: not config_toml.stat.exists
+  block:
+    - name: Ensure /etc/containerd directory exists
+      ansible.builtin.file:
+        path: /etc/containerd
+        state: directory
+        mode: "0755"
+
+    - name: Create containerd config.toml
+      ansible.builtin.shell:
+        cmd: "containerd config default > /etc/containerd/config.toml"
+      changed_when: false
+
+- name: Check if SystemdCgroup = false in config.toml
+  ansible.builtin.command:
+    cmd: "grep -q 'SystemdCgroup = false' /etc/containerd/config.toml"
+  register: systemd_cgroup
+  failed_when: false
+  changed_when: false
+
+- name: Change SystemdCgroup to true in config.toml
+  when: systemd_cgroup.rc == 0
+  block:
+    - name: Change SystemdCgroup to true in config.toml
+      ansible.builtin.replace:
+        path: /etc/containerd/config.toml
+        regexp: "SystemdCgroup = false"
+        replace: "SystemdCgroup = true"
+
+    - name: Restart containerd
+      ansible.builtin.systemd:
+        name: containerd
+        state: restarted

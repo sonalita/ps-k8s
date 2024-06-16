@@ -1,10 +1,17 @@
 ---
-- hosts: proxmox
-# Uncomment this if you need to autheticate the ssh connection with a password
+- name: Build Ubuntu 24.04 server template
+  hosts: proxmox
+  tasks:
+    - name: Update packages
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+
+# Uncomment this if you need to authenticate the ssh connection with a password
 #  vars_prompt:
 # - name: "ansible_password"
 #    prompt: "Enter the remote proxmox password"
 #    private: true
-  tasks:
-  - name: import proxmox role
-    import_role: name=proxmox_template
+    - name: Import proxmox role
+      ansible.builtin.import_role:
+        name: proxmox_template

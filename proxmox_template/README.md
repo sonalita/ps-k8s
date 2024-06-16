@@ -13,4 +13,4 @@ I have amended the role to fix all the ansible-lint issues (except long lines an
  - Ensure your ssh keys are installed on the proxmox host and that you can 'ssh root@your.proxmox.host'
  - Test that Ansible can reach your host with `ansible proxmox -m ping`. If successful, you should see a green 'pong' response. If you require a password for ssh authentication, add the --ask-pass parameter.
  - Edit the roles/proxmox-template/vars/main.template file - in particular, `ciuser`, `ipconfig0` and `sshkey` (update sshkey if you do not use the standard id_rsa name for your key). You may need to edit the name of the ipconfig0 variable if you wish to use a different network interface. 
- - If you wish to use a different cloud-init image, add or edit the cloudimgs variable
+ - If you wish to use a different cloud-init image, add or edit the cloudimg variable
