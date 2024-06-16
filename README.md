@@ -38,7 +38,7 @@ from the `course_infrastructure` folder, run the following command:
 ansible all -m ping
 ```
 
-If all is well, you will see green "pong" messages from each of the nodes and you can continue with the playbooks.
+If all is well, you will see green "pong" messages from each of the nodes and you can continue with the playbooks. If the script hangs, you didn't fingerprint the nodes and it is waiting for you to confirm acceptance. Type yes<ENTER> as many times as needed to allow the playbook to complete. If you ever redeploy the nodes or edit the cloudinit config, you will have to remove the old fingerprints with `ssh-keygen -R <host-name>` and reconnect with ssh to accept the new fingerprint.
 
 ### variables you might want to change
  - in group_vars/all.yaml - Update the ansible_user if you are not using the psight user. Also check the Kubernetes major and minor versions.
