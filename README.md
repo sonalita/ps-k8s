@@ -46,15 +46,13 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 
  ### Provisioning
 
- Just run `ansible-playbook site.yaml`
+ All the playbooks to provision the cluster are fully idempotent. Just run `ansible-playbook site.yaml`
 
  ## Playbooks
 
  ### base
 
 This role corresponds to the "PackageInstallation-containerd.sh" script in the /03/demos folder of the course exercise files. It does the following:
-
-Please note the following:
 
  - Configures the kernel with the necessary network mods, and updates sysctl
  - Installs containerd and configures the cgroup settings correctly
@@ -84,7 +82,7 @@ This step corresponds to the `CreateControlPlaneNode-containerd.sh` step in 03/d
 
  ### workers
 
- This is the final step, corresponding to the `CreateNodes-containerd.sh` step in 03/demos folder of the course exercise files.The steps in this script are identical to those in the first PackageInstallation step, so there is no need to repeat that in this playbook. ALl this playbook does is to join the node to the cluster.
+ This is the final step, corresponding to the `CreateNodes-containerd.sh` step in 03/demos folder of the course exercise files.The steps in the exercise script are identical to those in the first PackageInstallation step, so there is no need to repeat that in this playbook. All this playbook does is to join the node to the cluster.
 
 ## roadmap
  - Vagrant - create Ubuntu box with Ansible etc. and publish it. Add a vagrantfile to start VMs
