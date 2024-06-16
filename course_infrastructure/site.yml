@@ -4,3 +4,6 @@
 
 - name: Kubectl autocompletion
   import_playbook: playbooks/cplane.yml
+
+- name: Worker node configuration
+  import_playbook: playbooks/workers.yml

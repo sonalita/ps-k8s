@@ -5,7 +5,7 @@ The playbooks will provision the c1-cp1 control plane node, the 3 worker nodes (
 
 I recommend that you fork this repo so you can customize and preserve your configuration for future use.
 
-**THIS IS A WORK IN PROGRESS - DO NOT USE YET. Current status:proxmox template is complete, base provisioning of kubeadm/kubelet and containerd is done**
+**I have not yet done the Vagrant stuff - but the playbooks are all working if you use the proxmox template or build your own VMs to the specs shown below.**
 
 ## Prerequisites
  - A virtualization platform - this repo will include a Proxmox template and (eventually) a Vagrant Vagrantfile for Oracle Virtual Box.
@@ -52,24 +52,33 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 
  ### base
 
-This role corresponds to the "PackageInstallation-containerd.sh" script in the /03/demos folder of the course exercise files. Please note the following:
+This role corresponds to the "PackageInstallation-containerd.sh" script in the /03/demos folder of the course exercise files. It does the following:
 
-- swap is already disabled in the proxmox template/vagrant box
+Please note the following:
+
+ - Configures the kernel with the necessary network mods, and updates sysctl
+ - Installs containerd and configures the cgroup settings correctly
+ - Installs the Kubernetes packages for the version set in `group_vars/all.yaml` **Note: Part of the course covers upgrading your control plane so you should not install the very latest version**
+
+Note the following differences between the playbook and the exercise steps:
+
+- Swap is already disabled in the proxmox template/vagrant box
 - I have omitted the `apt-cache policy kubelet | head -n 20` step as the output is difficult to read in the Ansible log. You can ssh onto c1-cp1 and run it manually after the playbook has completed.
 - kubectl is installed as part of kubeadm - and it seems to always include the latest minor version (e.g.1.29.1-1.6 when you asked for 1.1-1) so I have omitted the explicit install of kubectl - it does not affect the exercises at all.
 - TODO: creation and distribution of node SSH keys and configuration of each node's /etc/hosts so you can get lost in an endless chain of ssh sessions :) (It may be convenient to ssh from control plane to worker nodes but you should be able to do everything from your workstation)
 
 ### cplane
- - runs on control plane only
- - Installs your control plane via kubeadm
- - installs the Calico network overlay with the default pod CIDR of 172.16.0.0/16. You should not need to change this, but if you do, configure a pod_cidr var in the playbook to override the role default value. 
- - Runs some  Quality of Life tasks that will add `kubectl` autocompletion and also alias kubectl to `k`. 
+
+This step corresponds to the `CreateControlPlaneNode-containerd.sh` step in 03/demos folder of the course exercise files. It runs on the c1-cp1 control plane only and does the following:
+ - Installs the control plane via kubeadm
+ - installs the Calico network overlay with the default pod CIDR of 172.16.0.0/16. You should not need to change this, but if you do, configure a pod_cidr var in the playbook to override the role default value. You should **not** edit the template or change the default value in the role's default folder.
+ - Runs some  Quality of Life tasks that will add `kubectl` autocompletion and also alias kubectl to `k`.
+
+ ### workers
+
+ This is the final step, corresponding to the `CreateNodes-containerd.sh` step in 03/demos folder of the course exercise files.The steps in this script are identical to those in the first PackageInstallation step, so there is no need to repeat that in this playbook. ALl this playbook does is to join the node to the cluster.
 
 ## roadmap
  - Vagrant - create Ubuntu box with Ansible etc. and publish it. Add a vagrantfile to start VMs
- - Create roles
-    - possibly options to choose between calico or flannel for CNI (Calico is HUGE and overkill for a small homelab cluster. Later on, if you want to play with external ingress using something like bareMetalLB and traeffic, Calico does not work well. Flannel is much more lightweight)
-    - cp role
-    - worker nodes role
-    - storage role
+ - CNI - possibly add an option to choose between Calico or Flannel. Calico is HUGE and overkill for a small HomeLab cluster. Later on, if you want to play with external ingress using something like [MetalLB]([https://metallb.universe.tf) and [Traefik]([https://doc.traefik.io/traefik/providers/kubernetes-ingress/), you will find that Calico does not work well. Flannel is much more lightweight and metalLB friendly.
 - Write docs, including instructions for windows hosts (ugh!).

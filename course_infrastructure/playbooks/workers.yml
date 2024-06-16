@@ -1,0 +1,33 @@
+---
+- name: Configure Worker nodes
+  hosts: nodes
+
+  tasks:
+    - name: Get list of nodes
+      ansible.builtin.command: "kubectl get nodes -o jsonpath='{.items[*].metadata.name}'"
+      register: nodes
+      delegate_to: "{{ groups['control'][0] }}"
+      changed_when: false
+
+    - name: Worker already joined
+      when: nodes.stdout.find(inventory_hostname) != -1
+      ansible.builtin.debug:
+        msg: "Node {{ inventory_hostname }} has already joined the cluster"
+
+    - name: Join worker node to cluster
+      when: nodes.stdout.find(inventory_hostname) == -1
+      block:
+        - name: "Joining message"
+          ansible.builtin.debug:
+            msg: "Joining node {{ inventory_hostname }} to the cluster"
+
+        - name: Get Join command
+          ansible.builtin.command: "kubeadm token create --print-join-command"
+          register: kubeadm_join
+          delegate_to: "{{ groups['control'][0] }}"
+          changed_when: false
+
+        - name: Join worker node to cluster
+          become: true
+          ansible.builtin.command: "{{ kubeadm_join.stdout }}"
+          changed_when: true
