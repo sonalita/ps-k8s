@@ -37,11 +37,6 @@ Vagrant.configure("2") do |config|
           swapoff -a
           sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
       SHELL
-        # Fix the default gateway to use the bridge network instead of the NAT that Vagrant creates
-        n.vm.provision "shell", inline: <<-SHELL
-          ip route del default
-          ip route add default via 192.168.50.1 metric 100
-      SHELL
      end
   end
 end

@@ -10,8 +10,11 @@
   block:
     - name: Run kubeadm init
       become: true
-      # TODO - fix the advertise address - this is just for testing to get the vagrant boxes working
-      ansible.builtin.command: "kubeadm init --pod-network-cidr={{ pod_cidr }} --kubernetes-version={{ kubernetes_kubeadm_version }}  --apiserver-advertise-address=192.168.50.5"  # noaq: long-lines
+      # TODO - fix the advertise address - this is just for testing to get the vagrant boxes working - needs a hostvar advertised_ip
+      # or maybe something based off :- name: Check environment variable
+      # ansible.builtin.debug:
+      #  msg: "{{ lookup('env', 'MY_ENV_VAR') | default('default_value', true) }}" and have the Vagrant file set the env var
+      ansible.builtin.command: "kubeadm init --pod-network-cidr={{ pod_cidr }} --kubernetes-version={{ kubernetes_kubeadm_version }}"  # --apiserver-advertise-address=192.168.50.11"  
       register: kubeadm_init
       changed_when: kubeadm_init.rc == 0  # noqa: literal-compare
 
