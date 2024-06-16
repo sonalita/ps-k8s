@@ -10,7 +10,8 @@
   block:
     - name: Run kubeadm init
       become: true
-      ansible.builtin.command: "kubeadm init --pod-network-cidr={{ pod_cidr }} --kubernetes-version={{ kubernetes_kubeadm_version }}"
+      # TODO - fix the advertise address - this is just for testing to get the vagrant boxes working
+      ansible.builtin.command: "kubeadm init --pod-network-cidr={{ pod_cidr }} --kubernetes-version={{ kubernetes_kubeadm_version }}  --apiserver-advertise-address=192.168.50.5"  # noaq: long-lines
       register: kubeadm_init
       changed_when: kubeadm_init.rc == 0  # noqa: literal-compare
 

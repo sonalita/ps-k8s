@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "theurbanpenguin/noble_server"
+  config.vm.disk :disk, primary:true,  size: "50GB"
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 2
+    vb.memory = 8192
+  end
+
+  username, keyfile = File.open('user.txt') { |f| f.readlines }.map(&:strip)
+  
+  File.readlines('machines.txt').each do |line|
+    hostname, ip = line.strip.split(' ')
+    config.vm.define hostname do |n|
+      n.vm.hostname = hostname
+      n.vm.network "public_network", ip: ip
+      n.vm.synced_folder ".", "/vagrant", disabled: "true"
+
+      n.vm.provision "shell", inline: <<-SHELL
+        useradd -m  -s /bin/bash  #{username}
+        echo '#{username} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+        # weirdly these two commands fail without sudo even though the provisioner is running as root
+        sudo mkdir -p /home/#{username}/.ssh
+        sudo chmod 700 /home/#{username}/.ssh
+      SHELL
+      n.vm.provision "file", source: "~/.ssh/#{keyfile}", destination: "/tmp/remote.pub"
+      n.vm.provision "shell", inline: <<-SHELL
+        cat //tmp/remote.pub >> /home/#{username}/.ssh/authorized_keys
+        rm /tmp/remote.pub
+        chmod 600 /home/#{username}/.ssh/authorized_keys
+        chown -R #{username}:#{username} /home/#{username}
+      SHELL
+        # Disable swwap. This provisioner will be removed when I build a better suited base box
+        n.vm.provision "shell", inline: <<-SHELL
+          swapoff -a
+          sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+      SHELL
+        # Fix the default gateway to use the bridge network instead of the NAT that Vagrant creates
+        n.vm.provision "shell", inline: <<-SHELL
+          ip route del default
+          ip route add default via 192.168.50.1 metric 100
+      SHELL
+     end
+  end
+end

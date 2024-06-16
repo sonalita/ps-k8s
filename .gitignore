@@ -3,3 +3,4 @@
 *.vault
 .ansible/
 .vscode/
+vagrant/.vagrant

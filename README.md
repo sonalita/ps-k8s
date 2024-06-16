@@ -5,7 +5,7 @@ The playbooks will provision the c1-cp1 control plane node, the 3 worker nodes (
 
 I recommend that you fork this repo so you can customize and preserve your configuration for future use.
 
-**I have not yet done the Vagrant stuff - but the playbooks are all working if you use the proxmox template or build your own VMs to the specs shown below.**
+**I have not yet done the Vagrant stuff (you may see a Vagrant file but it is not working properly yet) - but the playbooks are all working if you use the proxmox template or build your own VMs to the specs shown below.**
 
 ## Prerequisites
  - A virtualization platform - this repo will include a Proxmox template and (eventually) a Vagrant Vagrantfile for Oracle Virtual Box.
