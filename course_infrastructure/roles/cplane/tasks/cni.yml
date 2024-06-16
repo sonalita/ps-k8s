@@ -1,0 +1,10 @@
+---
+- name: Copy Calico deployment file
+  ansible.builtin.template:
+    src: "calico.yml.j2"
+    dest: "/tmp/calico.yml"
+    mode: "0644"
+
+- name: Apply Calico deployment
+  ansible.builtin.command: "kubectl apply -f /tmp/calico.yml"
+  changed_when: false

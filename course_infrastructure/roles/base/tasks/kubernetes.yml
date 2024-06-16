@@ -51,3 +51,13 @@
     - kubeadm
     - kubectl
     - containerd
+
+- name: Set up kubectl completion
+  ansible.builtin.shell:
+    cmd: "kubectl completion bash > /etc/bash_completion.d/kubectl"
+  changed_when: false
+
+- name: Set up kubectl alias
+  ansible.builtin.shell:
+    cmd: "echo 'alias k=kubectl' >> /etc/bash.bashrc"
+  changed_when: false

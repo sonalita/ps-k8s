@@ -1,0 +1,16 @@
+---
+- name: Add kubectl completion if not present
+  ansible.builtin.lineinfile:
+    path: .bashrc
+    line: "source <(kubectl completion bash)"
+    state: present
+- name: Add k alias for kubectl
+  ansible.builtin.lineinfile:
+    path: .bashrc
+    line: alias k=kubectl
+    state: present
+- name: Add k alias completion
+  ansible.builtin.lineinfile:
+    path: .bashrc
+    line: complete -o default -F __start_kubectl k
+    state: present

@@ -1,3 +1,6 @@
 ---
 - name: Master playbook for the course infrastructure
   import_playbook: playbooks/base.yml
+
+- name: Kubectl autocompletion
+  import_playbook: playbooks/cplane.yml

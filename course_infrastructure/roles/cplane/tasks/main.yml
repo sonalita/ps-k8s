@@ -1,0 +1,9 @@
+---
+- name: Import kubeadm tasks
+  ansible.builtin.import_tasks: kubeadm.yml
+
+- name: Import CNI tasks
+  ansible.builtin.import_tasks: cni.yml
+
+- name: Import kubectl completion tasks
+  ansible.builtin.import_tasks: kubectl.yml

@@ -48,7 +48,7 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 
  Just run `ansible-playbook site.yaml`
 
- ## Roles
+ ## Playbooks
 
  ### base
 
@@ -58,6 +58,12 @@ This role corresponds to the "PackageInstallation-containerd.sh" script in the /
 - I have omitted the `apt-cache policy kubelet | head -n 20` step as the output is difficult to read in the Ansible log. You can ssh onto c1-cp1 and run it manually after the playbook has completed.
 - kubectl is installed as part of kubeadm - and it seems to always include the latest minor version (e.g.1.29.1-1.6 when you asked for 1.1-1) so I have omitted the explicit install of kubectl - it does not affect the exercises at all.
 - TODO: creation and distribution of node SSH keys and configuration of each node's /etc/hosts so you can get lost in an endless chain of ssh sessions :) (It may be convenient to ssh from control plane to worker nodes but you should be able to do everything from your workstation)
+
+### cplane
+ - runs on control plane only
+ - Installs your control plane via kubeadm
+ - installs the Calico network overlay with the default pod CIDR of 172.16.0.0/16. You should not need to change this, but if you do, configure a pod_cidr var in the playbook to override the role default value. 
+ - Runs some  Quality of Life tasks that will add `kubectl` autocompletion and also alias kubectl to `k`. 
 
 ## roadmap
  - Vagrant - create Ubuntu box with Ansible etc. and publish it. Add a vagrantfile to start VMs

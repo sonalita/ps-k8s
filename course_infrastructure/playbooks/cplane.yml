@@ -1,0 +1,7 @@
+---
+- name: Configure kubectl autocompletion and alias
+  hosts: control
+  tasks:
+    - name: Import control plane role
+      ansible.builtin.import_role:
+        name: cplane
