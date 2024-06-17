@@ -1,0 +1,18 @@
+[control]
+c1-cp1 k8s_api_ip=192.168.50.11
+
+[workers]
+c1-node1
+c1-node2
+c1-node3
+
+[storage]
+c1-storage
+
+[nodes:children]
+workers
+storage
+
+[course:children]
+control
+nodes

@@ -8,23 +8,18 @@
 - name: Run kubeadm
   when: admin_conf.stat.exists == false
   block:
+    # For Vagrant boxes, kubeadm picks up the NAT interface so we need to fix that. k8s_api_id should be defined in the inventory file for a vagrant control plane host.
+    - name: Set k8s fact
+      set_fact:
+         k8s_advertise_ip: "{{ '--apiserver-advertise-address=' + k8s_api_ip }}"
+      when: k8s_api_ip is defined
+
     - name: Run kubeadm init
       become: true
-      # TODO - fix the advertise address - this is just for testing to get the vagrant boxes working - needs a hostvar advertised_ip
-      # or maybe something based off :- name: Check environment variable
+      ansible.builtin.command: "kubeadm init --pod-network-cidr={{ pod_cidr }} --kubernetes-version={{ kubernetes_kubeadm_version }}  {{ k8s_advertise_ip | default('') }}"
+      register: kubeadm_init
+      changed_when: kubeadm_init.rc == 0  # noqa: literal-compare
 
-    - name: Check environment variable on target host
-      shell: source ~/.bashrc && echo $MY_ENV_VAR
-      register: env_var
-      changed_when: false
-
-    - name: Set fact
-      set_fact:
-        endpoint: "{{ (env_var.stdout | default('')) != '' | ternary('--advertise=' + env_var.stdout, '') }}"
-
-    - name: Show the endpoint
-      debug:
-        msg: "endpoint is {{ endpoint }}"        
 
 - name: Ensure home directory .kube directory exists
   ansible.builtin.file:

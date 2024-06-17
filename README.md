@@ -5,7 +5,7 @@ The playbooks will provision the c1-cp1 control plane node, the 3 worker nodes (
 
 I recommend that you fork this repo so you can customize and preserve your configuration for future use.
 
-**I have not yet done the Vagrant stuff (you may see a Vagrant file but it is not working properly yet) - but the playbooks are all working if you use the proxmox template or build your own VMs to the specs shown below.**
+There are separate README files in the proxmox_template and vagrant folders that contain more information on creating the VMs on those platforms.
 
 ## Prerequisites
  - A virtualization platform - this repo will include a Proxmox template and (eventually) a Vagrant Vagrantfile for Oracle Virtual Box.
@@ -28,14 +28,19 @@ I recommend that you fork this repo so you can customize and preserve your confi
 - From your workstation, confirm that you can run `ssh psight@c1-cp1` without requiring a password, and once connected, that you can run `sudo echo hello` without being prompting for a password - this will simplify running the Ansible plays, and save you some typing during the course.
 - Repeat the above tests for `c1-node1`, `c1-node2`, `c1-node3` and `c1-storage`.
 - **ssh onto each node once before running the playbooks to ensure you have the fingerprint in your workstation's known_hosts file**
+- **For Vagrant provisioning, set the IP address of c1-cp1 in the variable k8s_api_ip in the vagrant inventory file** No changes should be needed for the proxmox inventory
 
 ## Running the Ansible Playbooks
 
 Firstly, check that Ansible can reach your nodes. If you have changed the user on the nodes, edit the `course_infrastructure/group-vars/all.yml` file to reflect the correct user.
-from the `course_infrastructure` folder, run the following command: 
+from the `course_infrastructure` folder, run one of the following command based on your platform: 
 
 ```bash
-ansible all -m ping
+ansible -i inventory/proxmox all -m ping
+```
+
+```bash
+ansible -i inventory/vagrant all -m ping
 ```
 
 If all is well, you will see green "pong" messages from each of the nodes and you can continue with the playbooks. If the script hangs, you didn't fingerprint the nodes and it is waiting for you to confirm acceptance. Type yes<ENTER> as many times as needed to allow the playbook to complete. If you ever redeploy the nodes or edit the cloudinit config, you will have to remove the old fingerprints with `ssh-keygen -R <host-name>` and reconnect with ssh to accept the new fingerprint.
@@ -46,7 +51,7 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 
  ### Provisioning
 
- All the playbooks to provision the cluster are fully idempotent. Just run `ansible-playbook site.yaml`
+ All the playbooks to provision the cluster are fully idempotent. Just run `ansible-playbook  -i provisioning/platform site.yaml` replacing platform with proxmox or vagrant
 
  ## Playbooks
 
