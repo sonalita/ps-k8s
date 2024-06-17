@@ -1,0 +1,27 @@
+{
+    "gateway": "192.168.50.1",
+    "proxmox-template-id": "8003",
+    "proxmox-base-vm-id": "111",
+    "machines": [
+        {
+            "name": "c1-cp1",
+            "ip": "192.168.50.5"
+        },
+        {
+            "name": "c1-node1",
+            "ip": "192.168.50.6"
+        },
+        {
+            "name": "c1-node2",
+            "ip": "192.168.50.7"
+        },
+        {
+            "name": "c1-node3",
+            "ip": "192.168.50.8"
+        },
+        {
+            "name": "c1-storage",
+            "ip": "192.168.50.9"
+        }
+    ]            
+}

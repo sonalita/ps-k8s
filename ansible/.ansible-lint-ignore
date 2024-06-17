@@ -1,0 +1,2 @@
+# This file contains ignores rule violations for ansible-lint
+roles/cplane/tasks/kubeadm.yml yaml[line-length]
