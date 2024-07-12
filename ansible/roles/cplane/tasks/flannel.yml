@@ -1,0 +1,10 @@
+---
+- name: Copy Flannel deployment file
+  ansible.builtin.template:
+    src: "kube-flannel.yml.j2"
+    dest: "/tmp/kube-flannel.yml"
+    mode: "0644"
+
+- name: Apply Flannel deployment
+  ansible.builtin.command: "kubectl apply -f /tmp/kube-flannel.yml"
+  changed_when: false

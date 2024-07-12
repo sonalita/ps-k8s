@@ -24,8 +24,12 @@
     group: root
     mode: "0644"
 
+- name: Debug - show nameserver
+  ansible.builtin.debug:
+    msg: "Nameserver is {{ nameserver }}"    
+
 - name: Set cloud init settings
-  ansible.builtin.script: "config.sh {{ next_vm_id }} {{ ipconfig0 }} {{ isopath }}/id_rsa.pub {{ ciuser }} {{ import_storage }} {{ isopath }}/{{ cloudimg.template_name }}.qcow2"  # noqa: yaml[line-length]
+  ansible.builtin.script: "config.sh {{ next_vm_id }} {{ ipconfig0 }} {{nameserver}} {{ isopath }}/id_rsa.pub {{ ciuser }} {{ import_storage }} {{ isopath }}/{{ cloudimg.template_name }}.qcow2"  # noqa: yaml[line-length]
   register: config
   changed_when: "'Skipping' not in config.stdout"
 

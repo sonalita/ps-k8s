@@ -19,6 +19,8 @@ if [ "$action" == "destroy" ]; then
 fi
 
 gw=$(jq -r '.gateway' config.json)
+nameserver=$(jq -r '.nameserver' config.json)
+
 template_id=$(jq -r '.["proxmox-template-id"]' config.json)
 vm=$(jq -r '.["proxmox-base-vm-id"]' config.json)
 
@@ -55,6 +57,9 @@ do
             echo  "Setting IP  $ip with gateway $gw for host $name"
             # shellcheck disable=SC2029
             ssh root@proxmox "qm set $vm --ipconfig0 ip=$ip/24,gw=$gw"
+
+            echo "Setting nameserver for $name"
+            ssh root@proxmox "qm set $vm --nameserver ${nameserver}"
 
             echo "Starting host $name (vm $vm)"
             # shellcheck disable=SC2029

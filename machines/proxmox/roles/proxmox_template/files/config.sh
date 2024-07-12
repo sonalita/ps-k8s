@@ -3,10 +3,12 @@ set -x
 
 vmid=$1
 ipconfig=$2
-sshkey=$3
-ciuser=$4
-dataStore=$5
-img=$6
+nameserver=$3
+sshkey=$4
+ciuser=$5
+dataStore=$6
+img=$7
+
 
 # if ide2 is already set to cloudinit, skip
 config_output=$(qm config "$vmid")
@@ -46,5 +48,6 @@ qm set "$vmid" --ipconfig0 "$ipconfig"
 qm set "$vmid" --boot c --bootdisk scsi0
 qm set "$vmid" --autostart=1
 qm set "$vmid" --onboot=1
+qm set "$vmid" --nameserver "$nameserver"
 
 

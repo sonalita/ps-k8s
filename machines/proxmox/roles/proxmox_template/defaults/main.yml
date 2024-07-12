@@ -5,3 +5,4 @@ template_note: >
   Administration path of courses.
 
 ansible_user: root
+nameserver: 8.8.8.8

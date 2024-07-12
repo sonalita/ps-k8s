@@ -58,7 +58,7 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 ### variables you might want to change
  - in `ansible/inventory/group_vars/all.yaml`, Update the ansible_user if you are not using the psight user. Also check the Kubernetes major and minor versions.
  - if you chose to use different hostnames, update the relevant `ansible/inventory` file
-
+ - If you would prefer to use the Flannel Network overlay instead of Calico as used by the course, then uncomment the `use_flannel` and `pod_cidr` variables. Flannel is more lightweight and also plays nicely with the [metallb](https://metallb.universe.tf/) load balancer should you wish to use that in the future.
  ### Provisioning
 
  All the playbooks to provision the cluster are fully idempotent. From the `ansible` folder, run `ansible-playbook  -i provisioning/<platform> site.yaml` replacing &lt;platform&gt; with proxmox or vagrant. Again, there are shortcut scripts in the repo for this in the `ansible` folder if you prefer less typing. `
@@ -83,8 +83,8 @@ Note the following differences between the playbook and the exercise steps:
 
 This step corresponds to the `CreateControlPlaneNode-containerd.sh` step in the `03/demos` folder of the course exercise files. It runs on the c1-cp1 control plane only and does the following:
  - Installs the control plane via kubeadm (and sets the api end point correctly if your VM has multiple network interfaces)
- - installs the Calico network overlay with the default pod CIDR of 172.16.0.0/16. You should not need to change this, but if you do, configure a `pod_cidr` var in the playbook to override the role default value. You should **not** edit the template or change the default value in the role's default folder.
- - Runs some  Quality of Life tasks that will add `kubectl` autocompletion and also alias kubectl to `k`.
+ - installs the either the Calico or Flannel network overlay with the default pod CIDR of 172.16.0.0/16 for Calico or 0.244.0.0/16 for Flannel. You should not need to change this, but if you do, configure a `pod_cidr` var in the playbook to override the role default value. **This only works for Calico currently - do not edit if using Flannel** You should **not** edit the Calico template or change the default value in the role's default folder.
+ - Runs some Quality of Life tasks that will add `kubectl` autocompletion and also alias kubectl to `k`.
 
  Note: It can be convenient to have kubectl on your workstation. If you already have kubectll installed you can just scp the config file from `c1-cp1:/home/psite/.kube` and merge it with any other configs you may have. If you need to install it, here's a quick way (see the [kubectl docs](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) for more details)
 

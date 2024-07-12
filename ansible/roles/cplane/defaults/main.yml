@@ -1,2 +1,3 @@
 ---
 pod_cidr: 172.16.0.0/16 # This is the default pod CIDR for Kubernetes and Calico CNI
+use_flannel: false

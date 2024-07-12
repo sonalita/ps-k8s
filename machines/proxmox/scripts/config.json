@@ -1,5 +1,6 @@
 {
     "gateway": "192.168.50.1",
+    "nameserver": "192.168.50.222",
     "proxmox-template-id": "8003",
     "proxmox-base-vm-id": "111",
     "machines": [
