@@ -66,4 +66,3 @@
   ansible.builtin.apt:
     name: apparmor
     state: absent
-    

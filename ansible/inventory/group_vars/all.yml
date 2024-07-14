@@ -9,3 +9,6 @@ kubernetes_full_version: "{{ kubernetes_kubeadm_version }}-1.1"
 # You will want to use Flannel if you wish to use metallb later as calico is not compatible  work with metallb
 #use_flannel: true
 #pod_cidr: 10.244.0.0/16
+
+#An example of controlling installation of additional addons. Uncomment to install the sealed secrets addon.
+#install_sealed_secrets: true

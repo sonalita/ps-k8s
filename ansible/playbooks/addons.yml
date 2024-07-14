@@ -1,0 +1,7 @@
+---
+- name: Install addons
+  hosts: control
+  tasks:
+    - name: Import Addons plane role
+      ansible.builtin.import_role:
+        name: addons

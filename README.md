@@ -58,7 +58,9 @@ If all is well, you will see green "pong" messages from each of the nodes and yo
 ### variables you might want to change
  - in `ansible/inventory/group_vars/all.yaml`, Update the ansible_user if you are not using the psight user. Also check the Kubernetes major and minor versions.
  - if you chose to use different hostnames, update the relevant `ansible/inventory` file
- - If you would prefer to use the Flannel Network overlay instead of Calico as used by the course, then uncomment the `use_flannel` and `pod_cidr` variables. Flannel is more lightweight and also plays nicely with the [metallb](https://metallb.universe.tf/) load balancer should you wish to use that in the future.
+ - If you would prefer to use the Flannel Network overlay instead of Calico as used by the course, then uncomment the `use_flannel` and `pod_cidr` variables in the group_vars/all.yaml file. Flannel is more lightweight and also plays nicely with the [metallb](https://metallb.universe.tf/) load balancer should you wish to use that in the future.
+ - There is also support for optional kubernetes addons - as an example, you can enable the [sealed secrets](https://github.com/bitnami-labs/sealed-secrets) addon by setting "enable_sealed_secrets" to true in the group_vars/all.yaml file. The addon will be installed on the control plane node only. **Note: Sealed secrets is not part of the course and is not covered in the course exercises.**
+
  ### Provisioning
 
  All the playbooks to provision the cluster are fully idempotent. From the `ansible` folder, run `ansible-playbook  -i provisioning/<platform> site.yaml` replacing &lt;platform&gt; with proxmox or vagrant. Again, there are shortcut scripts in the repo for this in the `ansible` folder if you prefer less typing. `
@@ -97,3 +99,8 @@ This step corresponds to the `CreateControlPlaneNode-containerd.sh` step in the 
  ### workers
 
  This is the final step, corresponding to the `CreateNodes-containerd.sh` step in the `03/demos` folder of the course exercise files.The steps in the exercise script are identical to those in the first `PackageInstallation` step, so there is no need to repeat that in this playbook. All this playbook does is to join the node to the cluster.
+
+### addons
+
+This will install additional addons on the control plane node. The only addon currently supported is the sealed secrets addon. **Note: Sealed secrets is not part of the course and is not covered in the course exercises.**
+

@@ -7,3 +7,6 @@
 
 - name: Worker node configuration
   import_playbook: playbooks/workers.yml
+
+- name: Add-ons
+  import_playbook: playbooks/addons.yml

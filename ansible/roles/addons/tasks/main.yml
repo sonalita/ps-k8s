@@ -1,0 +1,12 @@
+---
+- name: Copy Sealed Secrets deployment file
+  ansible.builtin.template:
+    src: "sealed-secrets.yml.j2"
+    dest: "/tmp/sealed-secrets.yaml"
+    mode: "0644"
+  when: install_sealed_secrets
+
+- name: Apply SealedSecrets deployment
+  ansible.builtin.command: "kubectl apply -f /tmp/sealed-secrets.yaml"
+  when: install_sealed_secrets
+  changed_when: false
