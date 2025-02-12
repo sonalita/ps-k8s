@@ -104,3 +104,7 @@ This step corresponds to the `CreateControlPlaneNode-containerd.sh` step in the 
 
 This will install additional addons on the control plane node. The only addon currently supported is the sealed secrets addon. **Note: Sealed secrets is not part of the course and is not covered in the course exercises.**
 
+
+## A note on copying kubeconfig files to a local workstation
+
+If you wish to have admin access to the cluster without having to ssh onto the control plane node, then you can simply copy the /etc/kubernetes/admin.conf to ~/.kube/config on your workstation. If you already have a config file for other clusters then you will have tro manually add the relevant sections from the node's config file to your config file.
