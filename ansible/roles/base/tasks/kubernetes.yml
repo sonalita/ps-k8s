@@ -40,7 +40,7 @@
   with_items:
     - kubelet={{ kubernetes_version }}
     - kubeadm={{ kubernetes_version }}
-    # - kubectl={{ kubernetes_version }} kubectl is installed as part of kubeadm package
+    - kubectl
 
 - name: Mark hold on Kubernetes packages
   ansible.builtin.dpkg_selections:

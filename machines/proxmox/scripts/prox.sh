@@ -8,7 +8,7 @@ if [ "$action" != "start" ] && [ "$action" != "stop" ] && [ "$action" != "destro
     exit 1
 fi
 
-# if action is destroy, ask user to confim by typing "DESTROY"
+# if action is destroy, ask user to confirm by typing "DESTROY"
 if [ "$action" == "destroy" ]; then
     echo "Are you sure you want to destroy all VMs? Type DESTROY to confirm."
     read -r confirm

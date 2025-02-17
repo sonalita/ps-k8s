@@ -39,6 +39,7 @@ You will end up with:
 
 ## Running the Ansible Playbooks
 
+Switch to the Ansible folder `cd ansible`
 Firstly, check that Ansible can reach your nodes. If you have changed the user on the nodes, edit the `ansible/inventory/group-vars/all.yml` file to reflect the correct user.
 from the `ansible` folder, run one of the following command based on your platform: 
 
@@ -54,6 +55,8 @@ ansible -i inventory/vagrant all -m ping
 There are shortcut scripts in the repo for this in the `ansible` folder if you prefer less typing. `
 
 If all is well, you will see green "pong" messages from each of the nodes and you can continue with the playbooks. If the script hangs, you didn't fingerprint the nodes and it is waiting for you to confirm acceptance. Type "yes&lt;ENTER&gt;>" as many times as needed to allow the playbook to complete. If you ever redeploy the nodes or edit any hardware details, you will have to remove the old fingerprints with `ssh-keygen -R <host-name>` and reconnect with ssh to accept the new fingerprint.
+
+Allow a few minutes after the Playbook completes for all of the system pods to fully deploy. You can check by `ssh psight@c1-cp1` andd the running `k get pods -A` - wait for all pods to be fully up and running. This may take a few minutes.
 
 ### variables you might want to change
  - in `ansible/inventory/group_vars/all.yaml`, Update the ansible_user if you are not using the psight user. Also check the Kubernetes major and minor versions.
