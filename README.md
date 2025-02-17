@@ -61,8 +61,10 @@ Allow a few minutes after the Playbook completes for all of the system pods to f
 ### variables you might want to change
  - in `ansible/inventory/group_vars/all.yaml`, Update the ansible_user if you are not using the psight user. Also check the Kubernetes major and minor versions.
  - if you chose to use different hostnames, update the relevant `ansible/inventory` file
- - If you would prefer to use the Flannel Network overlay instead of Calico as used by the course, then uncomment the `use_flannel` and `pod_cidr` variables in the group_vars/all.yaml file. Flannel is more lightweight and also plays nicely with the [metallb](https://metallb.universe.tf/) load balancer should you wish to use that in the future.
+ - **If you would prefer to use the Flannel Network overlay**  The course uses Calico but Flannel is much more lightweight. To use Flannel instead dof Calico then set `use_flannel: true` and  **comment out** the Callico `pod_cidr` variables and **uncomment** the Flannel `pod_cidr` variable in the `roles/cplane/defaults/main.yaml` file. I h=have done it this way to make sure Calico uses the same podd_cidr range as the course uses. Flannel is more lightweight and also plays nicely with the [metallb](https://metallb.universe.tf/) load balancer should you wish to use that in the future.
  - There is also support for optional kubernetes addons - as an example, you can enable the [sealed secrets](https://github.com/bitnami-labs/sealed-secrets) addon by setting "enable_sealed_secrets" to true in the group_vars/all.yaml file. The addon will be installed on the control plane node only. **Note: Sealed secrets is not part of the course and is not covered in the course exercises.**
+  
+
 
  ### Provisioning
 
