@@ -1,6 +1,7 @@
 #!/bin/bash
 
 action=$1
+CONFIG=~/.config/proxk8s.json
 
 # action must be start, stop,destroy or create. If not set to one of these values, exit with an error.
 if [ "$action" != "start" ] && [ "$action" != "stop" ] && [ "$action" != "destroy" ] && [ "$action" != "create" ]; then
@@ -18,17 +19,17 @@ if [ "$action" == "destroy" ]; then
     fi
 fi
 
-gw=$(jq -r '.gateway' config.json)
-nameserver=$(jq -r '.nameserver' config.json)
+gw=$(jq -r '.gateway' $CONFIG)
+nameserver=$(jq -r '.nameserver' $CONFIG)
 
-template_id=$(jq -r '.["proxmox-template-id"]' config.json)
-vm=$(jq -r '.["proxmox-base-vm-id"]' config.json)
+template_id=$(jq -r '.["proxmox-template-id"]' $CONFIG)
+vm=$(jq -r '.["proxmox-base-vm-id"]' $CONFIG)
 
-length=$(jq '.machines | length' config.json)
+length=$(jq '.machines | length' $CONFIG)
 for (( i=0; i<$length; i++ ))
 do
-    name=$(jq -r ".machines[$i].name" config.json)
-    ip=$(jq -r ".machines[$i].ip" config.json)
+    name=$(jq -r ".machines[$i].name" $CONFIG)
+    ip=$(jq -r ".machines[$i].ip" $CONFIG)
 
     
     case $action in 
