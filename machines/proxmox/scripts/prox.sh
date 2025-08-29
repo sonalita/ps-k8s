@@ -2,6 +2,7 @@
 
 action=$1
 CONFIG=~/.config/proxk8s.json
+PROXMOX_HOST=proxmox
 
 # action must be start, stop,destroy or create. If not set to one of these values, exit with an error.
 if [ "$action" != "start" ] && [ "$action" != "stop" ] && [ "$action" != "destroy" ] && [ "$action" != "create" ]; then
@@ -36,35 +37,35 @@ do
         start)
             echo "Starting host $name (vm $vm)"
             # shellcheck disable=SC2029
-            ssh root@proxmox "qm start $vm"
+            ssh root@$PROXMOX_HOST "qm start $vm"
             ;;
         stop)
             echo "Stopping host $name (vm $vm)"
             # shellcheck disable=SC2029
-            ssh root@proxmox "qm stop $vm"
+            ssh root@$PROXMOX_HOST "qm stop $vm"
             ;;
         destroy)
             echo "Destroying host $name (vm $vm)"
             # shellcheck disable=SC2029
-            ssh root@proxmox "qm stop $vm"
-            ssh root@proxmox "qm destroy $vm"
+            ssh root@$PROXMOX_HOST "qm stop $vm"
+            ssh root@$PROXMOX_HOST "qm destroy $vm"
             ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$name"
             ;;
         create)
             echo "Creating vm $vm from template $template_id for $name"
             # shellcheck disable=SC2029
-            ssh root@proxmox "pvesh create /nodes/pve1/qemu/${template_id}/clone --newid ${vm} --full --name ${name}"
+            ssh root@$PROXMOX_HOST "pvesh create /nodes/pve1/qemu/${template_id}/clone --newid ${vm} --full --name ${name}"
 
             echo  "Setting IP  $ip with gateway $gw for host $name"
             # shellcheck disable=SC2029
-            ssh root@proxmox "qm set $vm --ipconfig0 ip=$ip/24,gw=$gw"
+            ssh root@$PROXMOX_HOST "qm set $vm --ipconfig0 ip=$ip/24,gw=$gw"
 
             echo "Setting nameserver for $name"
-            ssh root@proxmox "qm set $vm --nameserver ${nameserver}"
+            ssh root@$PROXMOX_HOST "qm set $vm --nameserver ${nameserver}"
 
             echo "Starting host $name (vm $vm)"
             # shellcheck disable=SC2029
-            ssh root@proxmox "qm start $vm"
+            ssh root@$PROXMOX_HOST "qm start $vm"
             ;;
     esac
     # end switch
