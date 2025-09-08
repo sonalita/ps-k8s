@@ -24,4 +24,4 @@ I have amended the role to fix all the ansible-lint issues (except the dynamic f
   - `prox.sh start`
   - `prox.sh stop`
   - `prox.sh destroy` (requires you tto type "DESTROY" to confirm)
-  - `prox.sh keys --keyfile {public_key} --reboot --reset` # reboot and reset are optional. Without --reset it will append the requested key to exisitng keys.
+  - `prox.sh keys --keyfile {public_key} --reboot --reset` # reboot and reset are optional. Without --reset it will append the requested key to existing keys.

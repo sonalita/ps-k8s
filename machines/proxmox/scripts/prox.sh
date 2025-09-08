@@ -69,7 +69,7 @@ template_id=$(jq -r '.["proxmox-template-id"]' $CONFIG)
 vm=$(jq -r '.["proxmox-base-vm-id"]' $CONFIG)
 
 length=$(jq '.machines | length' $CONFIG)
-for (( i=0; i<$length; i++ ))
+for (( i=0; i<length; i++ ))
 do
     name=$(jq -r ".machines[$i].name" $CONFIG)
     ip=$(jq -r ".machines[$i].ip" $CONFIG)
@@ -90,6 +90,7 @@ do
             echo "Destroying host $name (vm $vm)"
             # shellcheck disable=SC2029
             ssh root@$PROXMOX_HOST "qm stop $vm"
+            # shellcheck disable=SC2029
             ssh root@$PROXMOX_HOST "qm destroy $vm"
             ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$name"
         ;;
@@ -103,6 +104,7 @@ do
             ssh root@$PROXMOX_HOST "qm set $vm --ipconfig0 ip=$ip/24,gw=$gw"
             
             echo "Setting nameserver for $name"
+            # shellcheck disable=SC2029
             ssh root@$PROXMOX_HOST "qm set $vm --nameserver ${nameserver}"
             
             echo "Starting host $name (vm $vm)"
